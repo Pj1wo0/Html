@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <title>장바구니</title>
+</head>
+<body style="margin:0; font-family:Arial, 'Noto Sans KR', sans-serif; color:#111; background:#fff;">
+    <div style="width:647px; margin:0 auto; background:#fff; overflow:hidden;">
+        <header style="height:43px; background:#9b572b url('assets/wood-texture.jpg') center/cover; display:flex; align-items:center; justify-content:space-between; padding:0 25px; border-top:1px solid #b9794d;">
+            <a href="index.html" style="font-size:18px; font-weight:700; color:#18345a; text-decoration:underline;">Baustelle</a>
+            <nav style="display:flex; align-items:center; gap:16px;">
+                <a href="index.html" style="font-size:9px; color:#000; text-decoration:underline;">Home</a>
+                <a href="about.html" style="font-size:9px; color:#000; text-decoration:underline;">About</a>
+                <a href="cart.html" style="font-size:9px; color:#000; text-decoration:underline;">shopping cart</a>
+                <a href="login.html" style="background:#000; color:#fff; text-decoration:none; padding:8px 11px; border-radius:6px; font-size:10px;">Login</a>
+            </nav>
+        </header>
+        <main style="padding:47px 38px 30px; min-height:490px;">
+            <h1 data-cart-title style="font-size:25px; margin:0;">장바구니</h1>
+            <div data-cart></div>
+        </main>
+    </div>
+    <script>
+        const products = {
+            ascon: {name:'아스콘,도로보수재,포대아스콘25kg', price:'15,000원 [ 1,500원(VAT 금액) ]', img:'assets/astone.jpg'},
+            hardtop: {name:'액상하드너,하드롬P,하드너', price:'35,000원 [ 3,500원(VAT 금액) ]', img:'assets/hardtop.jpg'},
+            stair: {name:'러버타일(계단용)1개(3T)-480X1200(색상다양)', price:'25,454원 [ 2,545원(VAT 금액) ]', img:'assets/stair-3t.jpg'}
+        };
+        function getCart() {
+            return JSON.parse(localStorage.getItem('cart') || '[]');
+        }
+        function setCart(c) {
+            localStorage.setItem('cart', JSON.stringify(c));
+        }
+        function renderCart() {
+            const el = document.querySelector('[data-cart]');
+            const c = getCart();
+            document.querySelector('[data-cart-title]').textContent = '장바구니(' + c.reduce((a, b) => a + b.qty, 0) + ')';
+            if (!c.length) {
+                el.innerHTML = '<div style="text-align:center; color:#aaa; font-size:24px; font-weight:700; margin-top:120px;">장바구니에 담긴 상품이 없습니다.</div><div style="background:#ddd; border-radius:4px; height:149px; margin-top:78px; display:flex; align-items:center; justify-content:center;"><a href="index.html" style="background:#b7b7b7; color:#000; text-decoration:none; border-radius:14px; padding:25px 40px; font-size:24px; font-weight:700;">추천상품 보러가기</a></div>';
+                return;
+            }
+            let total = 0;
+            el.innerHTML = '<div style="margin-top:30px;">' + c.map(i => {
+                const p = products[i.id];
+                const n = parseInt(p.price.replace(/[^0-9]/g, ''));
+                total += n * i.qty;
+                return '<div style="display:grid; grid-template-columns:70px 1fr 70px; gap:10px; align-items:center; border-bottom:1px solid #ddd; padding:10px 0;"><img src="' + p.img + '" style="width:70px; height:70px; object-fit:contain;"><b style="font-size:12px;">' + p.name + '</b><div><button onclick="changeQty('' + i.id + '', -1)" style="width:22px; height:22px;">-</button> ' + i.qty + ' <button onclick="changeQty('' + i.id + '', 1)" style="width:22px; height:22px;">+</button></div></div>';
+            }).join('') + '</div><div style="text-align:right; font-size:20px; font-weight:800; margin-top:20px;">합계 ' + total.toLocaleString() + '원</div>';
+        }
+        function changeQty(id, d) {
+            let c = getCart();
+            const x = c.find(i => i.id === id);
+            if (!x) return;
+            x.qty += d;
+            if (x.qty <= 0) c = c.filter(i => i.id !== id);
+            setCart(c);
+            renderCart();
+        }
+        document.addEventListener('DOMContentLoaded', renderCart);
+    </script>
+</body>
+</html>

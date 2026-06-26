@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <title>상품상세</title>
+</head>
+<body style="margin:0; font-family:Arial, 'Noto Sans KR', sans-serif; color:#111; background:#fff;">
+    <div style="width:746px; margin:0 auto; background:#fff; overflow:hidden;">
+        <header style="height:43px; background:#9b572b url('assets/wood-texture.jpg') center/cover; display:flex; align-items:center; justify-content:space-between; padding:0 25px; border-top:1px solid #b9794d;">
+            <a href="index.html" style="font-size:18px; font-weight:700; color:#18345a; text-decoration:underline;">Baustelle</a>
+            <nav style="display:flex; align-items:center; gap:16px;">
+                <a href="index.html" style="font-size:9px; color:#000; text-decoration:underline;">Home</a>
+                <a href="about.html" style="font-size:9px; color:#000; text-decoration:underline;">About</a>
+                <a href="cart.html" style="font-size:9px; color:#000; text-decoration:underline;">shopping cart</a>
+                <a href="login.html" style="background:#000; color:#fff; text-decoration:none; padding:8px 11px; border-radius:6px; font-size:10px;">Login</a>
+            </nav>
+        </header>
+        <main data-detail style="padding:0 37px 35px; min-height:760px;"></main>
+    </div>
+    <script>
+        const products = {
+            ascon: {
+                name:'아스콘,도로보수재,포대아스콘25kg',
+                brand:'유니온',
+                price:'15,000원 [ 1,500원(VAT 금액) ]',
+                img:'assets/astone.jpg',
+                label:'아스콘(유니온)',
+                desc:`제품명 : 상온 아스콘(긴급도로보수재)
+포장 : 25kg  (흑색)
+제품설명
+아스콘의 개요
+가열, 혼합이 필요없이 현장에서 즉시 개봉-포설-다짐만으로 도로보수가 완료되어 질 수 있도록 사용하기 편리하게 준비 되어있는 전천후 형 도로보수 자재입니다.
+아스콘의 특징
+• 기후에 관계없이 시공이 가능합니다.
+• 특별한 장비없이도 가능합니다.
+• 모든 도로에 가능합니다.
+• 장기 보관이 가능합니다.
+• 타 재료와 혼합, 가열없이 가능합니다.
+• 시공후 즉시 차량 개통이 가능합니다.
+아스콘의 용도
+• 고속도로 및 국도 소파 보수
+• 주차장, 인도, 광장 보수
+• 관로 매설후 도로 복구
+• 골프장, 철도 작업로 포장
+• 학교, 레저시설 부분 포장
+• 자전거용 전용도로(칼라흑-하드)`
+            },
+            hardtop: {
+                name:'액상하드너,하드롬P,하드너',
+                brand:'(주)금하',
+                price:'35,000원 [ 3,500원(VAT 금액) ]',
+                img:'assets/hardtop.jpg',
+                label:'하드톱P(액상하드너)',
+                desc:`제품명
+하드롬P-침투식 액상하드너
+• 제품용도
+• 주차장, 비행장, 공장, 식당바닥 등
+• 추천 도포량 (20kg / 40m2)
+• 고르덴 M2당
+  1차 도포시 : 0.2kg,   2차 도포시 : 0.1kg
+-- 거친면 M2당
+1차 도포시 : 0.3kg,   2차 도포시 : 0.2kg
+• 도포시기
+• 1차 : 콘크리트 건조후,     2차 : 1차 도포후 2시간 후
+• 특징
+• 표면의 강도를 높여 내마모성 증대
+• 콘크리트 산화를 억제(내약품성)
+• 내화학성을 높여 내구력을 증대
+• 점도 조절이 용이하여 침투력이 탁월
+• 가격이 저렴하고 작업이 간편하다.`
+            },
+            stair: {
+                name:'러버타일(계단용)1개(3T)-480X1200(색상다양)',
+                brand:'아이바닥',
+                price:'25,454원 [ 2,545원(VAT 금액) ]',
+                img:'assets/stair-3t.jpg',
+                label:'계단용(3T)',
+                desc:`제품명
+상세설명
+고무 소재의 우수한 내구성과 항균력을 갖춘 친환경 바닥재 러버타일 입니다.
+제품 모델에 따라 복도, 계단 시공이 가능하며, 많은 사람이 오가는 공공장소에 적합한 최상의 품질을 자랑합니다.
+STAIR 3T/5T
+제품명
+제품규격
+1200mm
+480mm
+박스당면적
+포장단위
+공간타입
+공항, 학교, 아트홀, 박물관, 도서관, 지하철역, 산업시설,
+빌전소등의 계단
+특징
+1. 뛰어난 Non-Slip 기능 (미끄럼사고방지)
+2. 할로겐 Free (화재시 유독가스 미 발생)
+3. 탁월한 보행소음 저감
+4. 저 VOC 친 환경성`
+            }
+        };
+        function getCart() {
+            return JSON.parse(localStorage.getItem('cart') || '[]');
+        }
+        function setCart(c) {
+            localStorage.setItem('cart', JSON.stringify(c));
+        }
+        function addCart(id) {
+            let c = getCart();
+            let x = c.find(i => i.id === id);
+            if (x) x.qty++;
+            else c.push({id:id, qty:1});
+            setCart(c);
+            alert('장바구니에 담았습니다.');
+        }
+        function buyNow() {
+            alert('구매 페이지로 이동합니다.');
+        }
+        function renderDetail() {
+            const el = document.querySelector('[data-detail]');
+            const id = new URLSearchParams(location.search).get('id') || 'ascon';
+            const p = products[id] || products.ascon;
+            const imgWidth = id === 'stair' ? '245px' : '260px';
+            const text = p.desc.replace(/\n/g, '<br>');
+            el.innerHTML = `
+                <div style="text-align:center; border-top:2px solid #2b71aa; width:300px; margin:0 auto;">
+                    <img src="${p.img}" style="width:${imgWidth}; height:260px; object-fit:contain;">
+                    <div style="background:#3c3d41; color:white; font-size:34px; font-weight:900; height:54px; line-height:54px; text-align:center; white-space:nowrap; overflow:hidden;">${p.label}</div>
+                </div>
+                <p style="font-size:11px; color:#777; margin-top:8px;">${p.brand}</p>
+                <h1 style="font-size:27px; line-height:1.25; margin:8px 0 0; font-weight:900;">${p.name}</h1>
+                <div style="font-size:25px; color:#8e2528; font-weight:900; margin-bottom:36px;">${p.price}</div>
+                <div style="float:right; margin-top:-72px; display:flex; gap:48px;">
+                    <button onclick="buyNow()" style="border:0; border-radius:7px; padding:14px 18px; font-size:12px; cursor:pointer; background:#bca989;">구매</button>
+                    <button onclick="addCart('${id}')" style="border:0; border-radius:7px; padding:14px 18px; font-size:12px; cursor:pointer; background:#bbb;">장바구니</button>
+                </div>
+                <div style="clear:both; color:#888; font-size:11px; line-height:1.45; width:650px;">${text}</div>
+            `;
+        }
+        document.addEventListener('DOMContentLoaded', renderDetail);
+    </script>
+</body>
+</html>
